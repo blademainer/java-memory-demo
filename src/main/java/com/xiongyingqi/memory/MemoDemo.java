@@ -3,6 +3,7 @@ package com.xiongyingqi.memory;
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryPoolMXBean;
+import java.lang.management.MemoryUsage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,9 +40,14 @@ public class MemoDemo {
     private static void printGarbage() {
         List<MemoryPoolMXBean> memoryPoolMXBeans = ManagementFactory.getMemoryPoolMXBeans();
         for (MemoryPoolMXBean memoryPoolMXBean : memoryPoolMXBeans) {
+            MemoryUsage peakUsage = memoryPoolMXBean.getPeakUsage();
+            MemoryUsage collectionUsage = memoryPoolMXBean.getCollectionUsage();
             System.out.println("------------------------------------------");
             System.out.println("Name: " + memoryPoolMXBean.getName());
-            System.out.println("CollectionUsage: " + memoryPoolMXBean.getCollectionUsage());
+            try {
+                System.out.println("CollectionUsage: " + buildMemoryUsageString(collectionUsage));
+            } catch (Exception e) {
+            }
             try {
                 System.out.println("CollectionUsageThreshold: " + memoryPoolMXBean
                         .getCollectionUsageThreshold());
@@ -52,7 +58,10 @@ public class MemoDemo {
                         .getCollectionUsageThresholdCount());
             } catch (Exception e) {
             }
-            System.out.println("PeakUsage: " + memoryPoolMXBean.getPeakUsage());
+            try {
+                System.out.println("PeakUsage: " +  buildMemoryUsageString(peakUsage));
+            } catch (Exception e) {
+            }
         }
         List<GarbageCollectorMXBean> garbageCollectorMXBeans = ManagementFactory
                 .getGarbageCollectorMXBeans();
@@ -62,6 +71,16 @@ public class MemoDemo {
             System.out.println("CollectionCount: " + garbageCollectorMXBean.getCollectionCount());
             System.out.println("CollectionTime: " + garbageCollectorMXBean.getCollectionTime() + "ms");
         }
+    }
+
+    private static String buildMemoryUsageString(MemoryUsage memoryUsage) {
+        StringBuffer buf = new StringBuffer();
+        buf.append("init = " + memoryUsage.getInit() + "(" + ByteUnit.readSize(memoryUsage.getInit()) + ") ");
+        buf.append("used = " + memoryUsage.getUsed() + "(" + ByteUnit.readSize(memoryUsage.getUsed()) + ") ");
+        buf.append("committed = " + memoryUsage.getCommitted() + "(" +
+                           ByteUnit.readSize(memoryUsage.getCommitted()) + ") " );
+        buf.append("max = " + memoryUsage.getMax() + "(" + ByteUnit.readSize(memoryUsage.getMax()) + ")");
+        return buf.toString();
     }
 
     //    public static void main(String[] args) {
