@@ -1,9 +1,28 @@
 language: java
-sudo: false # faster builds
+sudo: required
+services:
+  - docker
 jdk:
   - oraclejdk8
+install:
+  - mvn clean install com.spotify:docker-maven-plugin:0.4.13:build
 
 cache:
   directories:
   - .autoconf
   - $HOME/.m2
+env:
+  global:
+    - secure: "dpFEEjMYnpZfpTmSXEQhyNio49/JrPCi3g9Ae/QKn0OUpDOfZkmNlpX0hR/Hpvz0z5idgXIZZ7u0UFYBL6gbCkSNr662ZR6RAOFmvdOn5GKEKI+TGRNNsrD20ui+XnG2wDN8zxp0t4p2XmIZ/UrBQC5zmvqdiJigOT0XxhUDMg+waWuC5T8UpTZUMLddtqbjsMEMv2dhBbLg3vRoqhEGpX32VB5H+LO6flXqM06kIQ8vBdU1bOcrxd+N1EvBsLTqm6LO4D/2SoCYx9lTPx7+KkvtZJGjRArhhE1+OL4wUkDC2biCiLrgITr7/aDbbpF33la7TFguFfFzIJDakLDazAUs6czaL20GLChUVXPqz014dQwZ1pigIizw+EAK4nat6FSG2LhGHpSfnmX6fkrWV/iP3wHR3JAQ0GuREbuQj2tAjMRPi2Pcs8HLv1K2GxJlZFPh35wdGQIG7AxHSIw7aZ/ph/GR5hxge1Uw4fLPZVbgJy2nZlQbS31A3PQ9FDwQ2nDrfzVVsTYwFw2zllnOZa+p1AaF52zZHRFuP07G2f6Xg4udij2DKQP5T2aWpm8FyzNmWrG+U4iiE01DZHKJseATHHNWh+It8+zuaBqf2Q/0K+4dVVqt83ZJrxB7QLNSW63YY5nK747Jk0Oqdn5gNDUM2lxUIbvn3NcmMVFCyKs="
+    - secure: "x/lAJL3uePBXjtNTNT0n1JfwejXf2IJ9CIVQhKq2HqHjyxwrEFT2e9Q5ZTLuXnptGol4TiCV8HvbXe/t7cZixgZ3NpI13apWp/Blx1JqjNJNG+oPrA/a4LXQBvx909SWZjkmhKW/xcpvvWJiAb5HyA1R05mGXO4mS3rXW6nKkAnASEcJrGm7IFSlEmIDjckPIC19Pfpd8Xd+J3JOLNOzFIYl/os4prRjAFJjmPQK+2/e7VF7Y+ckusv6CfAJGplq1Dq3788Ro9HBtWPkUrUWP8MjpjreiThu8Fx1m7jztTMyFEPpQ4sSl7ot8RNBB973CaAB3moYHgg5DO5WBP0GYGuLlJxu2NnWle5JS+eVBXr1AoIOPDj+v3tFhbeaUD60zvAgkR7/TDoKnGOh6/Y1ol/faw7v8tlSmBt66KoT64LNJlU3Xwav/SiZYZ0/E5g8fWSKzVxh6T6CzEItpVuEXpz9dx294Or2IADv4vIA23s/LzQT/ez3uoV/hbPfR2txB+n1mQVTM6bVmHtgIqrmKQE2Q77ZxOzHqdag0tA5VbiplM6f6Wlu74WWy+QI4WDg6Wh2BJ6WQIczIC/H6rbQXHXJ2s9Qo8XjiAmsGA1rISy+tO4HoDJ/qqyy+4SqJ1hqMFgop9U9R3imby+0GYTuRXFwdKLfomvq6G7oykAjB8c="
+    - secure: "mJjyqs86bkY/Cnpumz0I36aqzX3iAqFQDogd8Z4Djt5vpkL0jTe+msmqUo37Ga2qfOb6rMySHkOFAzVEYn77EvFoR5szMG07EinE1/vx0RATpP+sEbGWAh7ss07KAPP87w3EqQTjPen09waA6/JPNIxREF5gayOzX6INRwarXuhwzRVvIQAxP3I/q9Yjn5Z0mp/wAX3vwsh3axxfagfxGyjgVcVnQ8BSlZH2+ofX4WdIUBGeqdxnZR6+r/9+GvNEzxwga+KFehVowfh/hQzV3PpXgXKVM4VN3oJJJ6hQRyL7BUyBML2cS/OKDN/t4cG98umYpXEQpwPCe9h+03ogLt4TLXuK4F3t43QmR9pwjpN8Kzoe6Ya0itVYl2Zb+ja39tyuyiDkRJ+cGfbiayMpMNzoGCb5CH/b3dvQM2DY79NeErGCLUBB2mXGnOL0dpjN73y6bdnfqVTTJ5m/kPf4mf12Q4sF+7P/Y78+8Zf6ZYewSRkpgDdwxHUtSA3RUvNuXKJ9S/Q1g3vu//zoX9fvtmy8GotrfmOzP0rmS0MZA2fIsC14jtYuqcpGy8SxJcIy/8+v6pKnWaqw12AAL8VXpFHSJU4klwx7OPvlMFN/IQ4KsOkjdHJPV6U0DCzoV0Xf6tOrCDsrI4GUOoVbeiJiAKkZ85p6pmdjCh3EaiMmPuI="
+    - COMMIT=${TRAVIS_COMMIT::8}
+
+after_success:
+  - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+  - export REPO=blademainer/java-memory-demo
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+#  - docker build -f Dockerfile -t $REPO:$COMMIT .
+  - docker tag $REPO $REPO:$TAG
+  - docker tag $REPO $REPO:travis-$TRAVIS_BUILD_NUMBER
+  - docker push $REPO
