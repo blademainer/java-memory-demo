@@ -92,6 +92,12 @@ public class MemoDemo {
     ////        }
     //    }
     public static void main(String[] args) {
+        Runtime.getRuntime().addShutdownHook(new Thread(){
+            @Override
+            public void run() {
+                System.out.println("Well received shutdown hook event!");
+            }
+        });
         Runtime.getRuntime().traceMethodCalls(true);
         for (int i = 1; ; i++) {
             allocate(10, ByteUnit.M);
