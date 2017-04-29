@@ -23,7 +23,7 @@ after_success:
   - export REPO=blademainer/java-memory-demo
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ] | [ -z "$TRAVIS_BRANCH" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
   - env
-  - docker images | grep $REPO | while read repo tag other; do docker tag "$repo:$tag" $REPO:$TAG; docker tag "$repo:$tag" $REPO:travis-$TRAVIS_BUILD_NUMBER; done
+  - docker images | grep $REPO | while read repo tag other; do docker tag "$repo:$tag" $REPO:$TAG; docker tag "$repo:$tag" $REPO:latest; docker tag "$repo:$tag" $REPO:travis-$TRAVIS_BUILD_NUMBER; done
 #  - docker build -f Dockerfile -t $REPO:$COMMIT .
 #  - docker tag $REPO $REPO:$TAG
 #  - docker tag $REPO $REPO:travis-$TRAVIS_BUILD_NUMBER
