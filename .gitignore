@@ -1,3 +1,4 @@
+jvmdump
 dockerOut/
 *.testdb
 *.log
