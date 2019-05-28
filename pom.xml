@@ -9,6 +9,10 @@
     <version>1.0-SNAPSHOT</version>
 
 
+    <properties>
+        <maven.compiler.source>1.6</maven.compiler.source>
+        <maven.compiler.target>1.6</maven.compiler.target>
+    </properties>
     <build>
         <!--自动导入资源文件，这样占位符就能起作用了-->
         <resources>

@@ -1,0 +1,13 @@
+FROM fabric8/java-centos-openjdk8-jdk:1.6.3
+ENV JAVA_MEMORY_DEMO_HOME=/usr/local/java-memory-demo
+ENV JAVA_MAIN_CLASS="com.xiongyingqi.memory.MemoDemo"
+ENV JAVA_APP_JAR="/deployments/app.jar"
+ENV JAVA_OPTIONS="-XX:+PrintFlagsFinal -XX:+PrintGCDetails"
+
+ADD app.jar /deployments/
+# Shit run cmd:
+# docker run -e JAVA_OPTIONS="-Xmx128m" --memory-swap=0 --memory-swappiness=0 -m 100m --rm blademainer/java-memory-demo
+# Worked well with cmd:
+# docker run -e JAVA_OPTIONS="-Xmx128m" --memory-swap=0 --memory-swappiness=0 -m 256m --rm blademainer/java-memory-demo
+
+#CMD java -XX:+PrintFlagsFinal -XX:+PrintGCDetails ${JAVA_OPTIONS} -classpath app.jar com.xiongyingqi.memory.MemoDemo
