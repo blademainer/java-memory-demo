@@ -10,4 +10,4 @@ ADD app.jar /deployments/
 # Worked well with cmd:
 # docker run -e JAVA_OPTIONS="-Xmx128m" --memory-swap=0 --memory-swappiness=0 -m 256m --rm blademainer/java-memory-demo
 
-#CMD java -XX:+PrintFlagsFinal -XX:+PrintGCDetails ${JAVA_OPTIONS} -classpath app.jar com.xiongyingqi.memory.MemoDemo
+#CMD java -XX:+PrintFlagsFinal -XX:+PrintGCDetails -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap ${JAVA_OPTIONS} -classpath app.jar com.xiongyingqi.memory.MemoDemo
