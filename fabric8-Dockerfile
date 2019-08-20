@@ -1,4 +1,4 @@
-FROM fabric8/java-centos-openjdk8-jdk:1.6.3
+FROM fabric8/java-centos-openjdk11-jdk:1.6.3
 ENV JAVA_MEMORY_DEMO_HOME=/usr/local/java-memory-demo
 ENV JAVA_MAIN_CLASS="com.xiongyingqi.memory.MemoDemo"
 ENV JAVA_APP_JAR="/deployments/app.jar"

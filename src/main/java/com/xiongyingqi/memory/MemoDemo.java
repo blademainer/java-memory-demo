@@ -95,7 +95,7 @@ public class MemoDemo {
         Runtime.getRuntime().addShutdownHook(new Thread(){
             @Override
             public void run() {
-                System.out.println("Well received shutdown hook event!");
+                System.err.println("!!!!!!!!Well received shutdown hook event!!!!!!!!");
             }
         });
         Runtime.getRuntime().traceMethodCalls(true);

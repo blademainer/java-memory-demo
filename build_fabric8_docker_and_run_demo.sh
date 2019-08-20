@@ -15,4 +15,4 @@ docker build . -t blademainer/java-memory-demo:${commit_id}
 # If --memory and --memory-swap are set to the same value, this prevents containers from using any swap.
 # This is because --memory-swap is the amount of combined memory and swap that can be used,
 # while --memory is only the amount of physical memory that can be used.
-docker run --rm --name java-memory-demo --memory-swap=128m --memory-swappiness=0 -m 128m  blademainer/java-memory-demo:${commit_id}
+docker run --rm --name java-memory-demo --memory-swap=256m --memory-swappiness=0 -m256m  blademainer/java-memory-demo:${commit_id}
